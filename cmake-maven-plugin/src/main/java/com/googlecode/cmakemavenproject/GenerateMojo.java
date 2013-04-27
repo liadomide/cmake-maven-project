@@ -27,6 +27,10 @@ import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.twdata.maven.mojoexecutor.MojoExecutor;
@@ -35,88 +39,75 @@ import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
 
 /**
  * Goal which generates project files.
- *
- * @goal generate
- * @phase process-sources
+ * <p/>
  *
  * @author Gili Tzabari
  */
+@Mojo(name="generate", defaultPhase=LifecyclePhase.PROCESS_SOURCES)
 public class GenerateMojo
 	extends AbstractMojo
 {
 	/**
 	 * The release platform.
-	 *
-	 * @parameter expression="${classifier}"
-	 * @readonly
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
+	@Parameter(readonly=true, property="classifier")
 	private String classifier;
+
 	/**
 	 * The directory containing CMakeLists.txt
-	 *
-	 * @parameter
-	 * @required
 	 */
-	@SuppressWarnings(
-	{
-		"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"
-	})
+	@SuppressWarnings({"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"})
+	@Parameter(required=true)
 	private File sourcePath;
+
 	/**
 	 * The output directory.
-	 *
-	 * @parameter
-	 * @required
 	 */
-	@SuppressWarnings(
-	{
-		"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"
-	})
+	@SuppressWarnings({"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"})
+	@Parameter(required=true)
 	private File targetPath;
+
 	/**
 	 * The makefile generator to use.
-	 *
-	 * @parameter
-	 * @required
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
+	@Parameter(required=true)
 	private String generator;
+
 	/**
 	 * The environment variables.
-	 *
-	 * @parameter
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
+	@Parameter
 	private Map<String, String> environmentVariables;
+
 	/**
 	 * Extra command-line options to pass to cmake.
-	 *
-	 * @parameter
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
+	@Parameter
 	private List<String> options;
+
 	/**
-	 * @component
+	 * The build plugin manager.
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
+	@Component
 	private BuildPluginManager pluginManager;
+
 	/**
-	 * @parameter expression="${project}"
-	 * @required
-	 * @readonly
+	 * The Maven project object.
 	 */
-	@SuppressWarnings(
-	{
-		"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"
-	})
+	@SuppressWarnings({"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"})
+	@Component
 	private MavenProject project;
+
 	/**
-	 * @parameter expression="${session}"
-	 * @required
-	 * @readonly
+	 * The Maven session.
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
+	@Parameter(required=true, readonly=true, property="session")
 	private MavenSession session;
 
 	@Override

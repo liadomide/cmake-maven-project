@@ -1,0 +1,20 @@
+#
+# Upstream hg artifacts
+#
+.hg
+.hgignore
+.hgtags
+
+#
+# Upstream creator's NetBeans IDE files
+#
+nbactions-windows.xml
+nbactions.xml
+nb-configuration.xml
+
+#
+# Eclipse IDE files
+#
+.project
+.settings
+.classpath
