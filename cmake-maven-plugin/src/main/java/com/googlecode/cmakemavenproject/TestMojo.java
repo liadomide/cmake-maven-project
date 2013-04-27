@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 
 import javax.xml.transform.Transformer;
@@ -145,7 +146,7 @@ public class TestMojo extends AbstractMojo
 			File tagFile = new File(buildDirectory, "/Testing/TAG");
 			BufferedReader tagReader = new BufferedReader(
 				new InputStreamReader(new FileInputStream(tagFile),
-				"UTF-8"));
+				Charset.defaultCharset()));
 
 			String tag = tagReader.readLine();
 			tagReader.close();
