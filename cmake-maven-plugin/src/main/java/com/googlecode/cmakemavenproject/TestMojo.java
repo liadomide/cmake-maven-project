@@ -15,10 +15,12 @@ package com.googlecode.cmakemavenproject;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 import java.nio.file.Paths;
 
@@ -141,10 +143,11 @@ public class TestMojo extends AbstractMojo
 
 			// Read the ctest TAG file to find out what current run was called
 			File tagFile = new File(buildDirectory, "/Testing/TAG");
-			FileReader tagFileReader = new FileReader(tagFile);
-			BufferedReader tagReader = new BufferedReader(tagFileReader);
-			String tag = tagReader.readLine();
+			BufferedReader tagReader = new BufferedReader(
+				new InputStreamReader(new FileInputStream(tagFile),
+				"UTF-8"));
 
+			String tag = tagReader.readLine();
 			tagReader.close();
 
 			if (tag == null || tag.trim().length() == 0)
