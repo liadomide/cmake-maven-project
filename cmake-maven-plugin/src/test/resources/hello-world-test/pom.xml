@@ -37,16 +37,16 @@
                             <projectDirectory>${project.build.directory}/</projectDirectory>
                         </configuration>
                     </execution>
-                    <!--<execution>
+                    <execution>
                         <id>cmake-test</id>
                         <goals>
                             <goal>test</goal>
                         </goals>
                         <configuration>
                             <buildDirectory>${project.build.directory}</buildDirectory>
-                            <testFailureIgnore>true</testFailureIgnore>
+                            <testFailureIgnore>false</testFailureIgnore>
                         </configuration>
-                    </execution>-->
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

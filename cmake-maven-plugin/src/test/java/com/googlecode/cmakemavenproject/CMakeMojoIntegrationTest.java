@@ -1,5 +1,19 @@
 package com.googlecode.cmakemavenproject;
 
+/*
+ * Copyright 2001-2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 import java.io.File;
 import java.io.IOException;
 
@@ -12,17 +26,19 @@ import org.apache.maven.it.util.ResourceExtractor;
 
 /**
  * An abstract test class that handles <code>Verifier</code> configuration.
+ * <p/>
  * 
  * @author Kevin S. Clarke <ksclarke@gmail.com>
  */
-public abstract class CMakeMojoIntegrationTest {
+public abstract class CMakeMojoIntegrationTest
+{
 
 	private static final String SETTINGS = "/settings.xml";
-	private static final String CLEAN_PLUGIN_PATH = "/org/apache/maven/plugins/maven-clean-plugin";
 
 	/**
 	 * Returns a <code>Verifier</code> that has been configured to use the test
 	 * repository along with the test project that was passed in as a variable.
+	 * <p/>
 	 * 
 	 * @param testName The CMake Maven project to test
 	 * @return A configured <code>Verifier</code>
@@ -32,26 +48,20 @@ public abstract class CMakeMojoIntegrationTest {
 	protected Verifier getVerifier(String testName) throws IOException,
 			VerificationException
 	{
-		Class<? extends CMakeMojoIntegrationTest> c = getClass();
+		Class<? extends CMakeMojoIntegrationTest> cls = getClass();
 		String name = testName.startsWith("/") ? testName : "/" + testName;
-		File config = ResourceExtractor.simpleExtractResources(c, SETTINGS);
-		File test = ResourceExtractor.simpleExtractResources(c, name);
+		File config = ResourceExtractor.simpleExtractResources(cls, SETTINGS);
+		File test = ResourceExtractor.simpleExtractResources(cls, name);
 		String settings = config.getAbsolutePath();
 
 		// Construct a verifier that will run our integration tests
 		Verifier verifier = new Verifier(test.getAbsolutePath(), settings);
-		String cleanPluginPath = verifier.localRepo + CLEAN_PLUGIN_PATH;
 		Properties properties = verifier.getVerifierProperties();
 
 		// use.mavenRepoLocal instructs forked tests to use the local repo
 		properties.setProperty("use.mavenRepoLocal", "true");
 
-		verifier.setAutoclean(true); // Set so clean is run before the tests
-
-		// If we have the clean plugin, the Maven jars are already installed
-		if (new File(cleanPluginPath).exists()) {
-			verifier.addCliOption("-o"); // offline saves unnecessary checks
-		}
+		verifier.setAutoclean(true); // Set so clean is run before each test
 
 		return verifier;
 	}

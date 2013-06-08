@@ -1,20 +1,31 @@
 package com.googlecode.cmakemavenproject;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.util.Properties;
+/*
+ * Copyright 2001-2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 
 import org.apache.maven.it.Verifier;
 
 import org.junit.Test;
 
 /**
- * A test of <code>GenerateMojo</code>.
+ * An integration test that runs tests related to generating code using CMake.
+ * <p/>
  * 
  * @author Kevin S. Clarke <ksclarke@gmail.com>
  */
-public class GenerateMojoIntegrationTest extends CMakeMojoIntegrationTest {
+public class GenerateMojoIntegrationTest extends CMakeMojoIntegrationTest
+{
 
 	/**
 	 * Tests the generation of a very simple &quot;Hello World&quot; project.
@@ -22,13 +33,12 @@ public class GenerateMojoIntegrationTest extends CMakeMojoIntegrationTest {
 	 * @throws Exception If the test fails as a result of an exception
 	 */
 	@Test
-	public void testGenerateHelloWorld() throws Exception {
+	public void testGenerateHelloWorld() throws Exception
+	{
 		Verifier verifier = getVerifier("hello-world-test");
-		
-		verifier.displayStreamBuffers(); // We want to see test's System.out
-		verifier.executeGoal("process-sources"); // Tests source generation
-		verifier.resetStreams(); // Sets the System.out and System.err back
-
+		verifier.displayStreamBuffers();
+		verifier.executeGoal("process-sources");
+		verifier.resetStreams();
 		verifier.verifyErrorFreeLog();
 	}
 

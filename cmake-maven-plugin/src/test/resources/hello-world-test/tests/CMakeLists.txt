@@ -1,0 +1,1 @@
+add_test(HelloTest ${CMAKE_BINARY_DIR}/hello)
