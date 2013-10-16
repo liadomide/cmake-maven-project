@@ -33,7 +33,11 @@ import org.apache.maven.it.util.ResourceExtractor;
 public abstract class CMakeMojoIntegrationTest
 {
 
+    // Maven settings.xml file to be used for the test projects
 	private static final String SETTINGS = "/settings.xml";
+	
+	// CMake-Maven-Plugin version (so we don't have to manually keep in sync) 
+	private static final String CMP_VERSION = "cmake.project.version";
 
 	/**
 	 * Returns a <code>Verifier</code> that has been configured to use the test
@@ -55,11 +59,15 @@ public abstract class CMakeMojoIntegrationTest
 		String settings = config.getAbsolutePath();
 
 		// Construct a verifier that will run our integration tests
-		Verifier verifier = new Verifier(test.getAbsolutePath(), settings);
-		Properties properties = verifier.getVerifierProperties();
+		Verifier verifier = new Verifier(test.getAbsolutePath(), settings, true);
+		Properties verProperties = verifier.getVerifierProperties();
+		Properties sysProperties = verifier.getSystemProperties();
+
+		// We need to pass along the version number of our parent project
+		sysProperties.setProperty(CMP_VERSION, System.getProperty(CMP_VERSION));
 
 		// use.mavenRepoLocal instructs forked tests to use the local repo
-		properties.setProperty("use.mavenRepoLocal", "true");
+		verProperties.setProperty("use.mavenRepoLocal", "true");
 
 		verifier.setAutoclean(true); // Set so clean is run before each test
 

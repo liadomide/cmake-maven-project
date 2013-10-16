@@ -43,7 +43,7 @@ import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
  *
  * @author Gili Tzabari
  */
-@Mojo(name="generate", defaultPhase=LifecyclePhase.PROCESS_SOURCES)
+@Mojo(name = "generate", defaultPhase = LifecyclePhase.PROCESS_SOURCES)
 public class GenerateMojo
 	extends AbstractMojo
 {
@@ -51,63 +51,55 @@ public class GenerateMojo
 	 * The release platform.
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
-	@Parameter(readonly=true, property="classifier")
+	@Parameter(property = "classifier", readonly = true)
 	private String classifier;
-
 	/**
-	 * The directory containing CMakeLists.txt
+	 * The directory containing CMakeLists.txt.
 	 */
-	@SuppressWarnings({"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"})
-	@Parameter(required=true)
+	@SuppressWarnings(
+		{
+			"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"
+		})
+	@Parameter(required = true)
 	private File sourcePath;
-
 	/**
 	 * The output directory.
 	 */
-	@SuppressWarnings({"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"})
-	@Parameter(required=true)
+	@SuppressWarnings(
+		{
+			"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"
+		})
+	@Parameter(required = true)
 	private File targetPath;
-
 	/**
 	 * The makefile generator to use.
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
-	@Parameter(required=true)
+	@Parameter(required = true)
 	private String generator;
-
 	/**
 	 * The environment variables.
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
 	@Parameter
 	private Map<String, String> environmentVariables;
-
 	/**
 	 * Extra command-line options to pass to cmake.
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
 	@Parameter
 	private List<String> options;
-
-	/**
-	 * The build plugin manager.
-	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
 	@Component
 	private BuildPluginManager pluginManager;
-
-	/**
-	 * The Maven project object.
-	 */
-	@SuppressWarnings({"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"})
-	@Component
+	@SuppressWarnings(
+		{
+			"UWF_UNWRITTEN_FIELD", "NP_UNWRITTEN_FIELD"
+		})
+	@Parameter(property = "project", required = true, readonly = true)
 	private MavenProject project;
-
-	/**
-	 * The Maven session.
-	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
-	@Parameter(required=true, readonly=true, property="session")
+	@Parameter(property = "session", required = true, readonly = true)
 	private MavenSession session;
 
 	@Override

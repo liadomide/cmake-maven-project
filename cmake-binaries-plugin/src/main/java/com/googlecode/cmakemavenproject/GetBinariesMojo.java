@@ -14,7 +14,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
+import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,6 +27,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,40 +46,34 @@ import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 /**
  * Downloads and installs the CMake binaries into the local Maven repository.
  * <p/>
- * @goal get-binaries
- * @phase generate-resources
  * @author Gili Tzabari
  */
+@Mojo(name = "get-binaries", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class GetBinariesMojo
 	extends AbstractMojo
 {
 	/**
 	 * The release platform.
-	 * <p/>
-	 * @parameter expression="${classifier}"
-	 * @required
-	 * @readonly
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
+	@Parameter(property = "classifier", required = true, readonly = true)
 	private String classifier;
 	/**
 	 * The project version.
-	 * <p/>
-	 * @parameter expression="${project.version}"
 	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
+	@Parameter(property = "project.version")
 	private String version;
-	/**
-	 * @parameter expression="${project}"
-	 * @required
-	 * @readonly
-	 */
 	@SuppressWarnings("UWF_UNWRITTEN_FIELD")
+	@Parameter(property = "project", required = true, readonly = true)
 	private MavenProject project;
 
 	@Override
@@ -286,8 +283,11 @@ public class GetBinariesMojo
 					Files.createDirectories(directory);
 
 					if (attributes.length > 0)
-						Files.setPosixFilePermissions(directory, (Set<PosixFilePermission>) attributes[0].
-							value());
+					{
+						@java.lang.SuppressWarnings("unchecked")
+						Set<PosixFilePermission> permissions = (Set<PosixFilePermission>) attributes[0].value();
+						Files.setPosixFilePermissions(directory, permissions);
+					}
 					continue;
 				}
 				ReadableByteChannel reader = Channels.newChannel(in);
@@ -298,7 +298,7 @@ public class GetBinariesMojo
 
 				try (SeekableByteChannel out = Files.newByteChannel(targetFile,
 					ImmutableSet.of(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
-					StandardOpenOption.WRITE), attributes))
+						StandardOpenOption.WRITE), attributes))
 				{
 					while (true)
 					{
@@ -315,13 +315,62 @@ public class GetBinariesMojo
 					}
 				}
 			}
-			Files.createDirectories(target.getParent());
-			Files.move(tempDir, target);
+
+			// Move extracted filess from tempDir to target.
+			// Can't use Files.move() because tempDir might reside on a different drive than target
+			copyDirectory(tempDir, target);
+			deleteRecursively(tempDir);
 		}
 		catch (ArchiveException e)
 		{
 			throw new IOException("Could not uncompress: " + source, e);
 		}
+	}
+
+	/**
+	 * Copies a directory.
+	 * <p>
+	 * NOTE: This method is not thread-safe.
+	 * <p>
+	 * @param source the directory to copy from
+	 * @param target the directory to copy into
+	 * @throws IOException if an I/O error occurs
+	 */
+	private void copyDirectory(final Path source, final Path target) throws IOException
+	{
+		Files.walkFileTree(source, EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE,
+			new FileVisitor<Path>()
+			{
+				@Override
+				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+				throws IOException
+				{
+					Files.createDirectories(target.resolve(source.relativize(dir)));
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException
+				{
+					Files.copy(file, target.resolve(source.relativize(file)),
+						StandardCopyOption.COPY_ATTRIBUTES);
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult visitFileFailed(Path file, IOException e) throws IOException
+				{
+					throw e;
+				}
+
+				@Override
+				public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException
+				{
+					if (e != null)
+						throw e;
+					return FileVisitResult.CONTINUE;
+				}
+			});
 	}
 
 	/**
@@ -346,7 +395,7 @@ public class GetBinariesMojo
 
 			try (SeekableByteChannel out = Files.newByteChannel(intermediateTarget,
 				ImmutableSet.of(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
-				StandardOpenOption.WRITE)))
+					StandardOpenOption.WRITE)))
 			{
 				while (true)
 				{
@@ -477,8 +526,8 @@ public class GetBinariesMojo
 		Files.walkFileTree(source, new SimpleFileVisitor<Path>()
 		{
 			@Override
-			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws
-				IOException
+			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+				throws IOException
 			{
 				if (dir.getFileName().toString().equals("bin"))
 				{

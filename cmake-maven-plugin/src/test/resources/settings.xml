@@ -1,12 +1,3 @@
 <settings>
-    <profiles>
-        <!-- Sets testing profile to be same as used to build main project -->
-        <profile>
-            <id>${cmake.classifier}</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-    </profiles>
     <localRepository>${test-repo}</localRepository>
 </settings>
