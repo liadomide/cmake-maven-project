@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6.4)
-project(HelloTest)
-add_executable(hello-test main.c)
+project(DashboardTest)
+add_executable(dashboard-test main.c)
 
 # Turn on testing
 enable_testing()

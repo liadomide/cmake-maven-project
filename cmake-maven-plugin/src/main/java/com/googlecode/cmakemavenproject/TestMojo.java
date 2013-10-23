@@ -14,6 +14,14 @@ package com.googlecode.cmakemavenproject;
  * the License.
  */
 
+import java.nio.file.Path;
+
+import java.util.ArrayList;
+
+import java.util.Arrays;
+
+import java.util.List;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,7 +54,6 @@ import org.apache.maven.project.MavenProject;
 /**
  * Goal which runs CMake/CTest tests.
  * <p/>
- * 
  * @author Kevin S. Clarke <ksclarke@gmail.com>
  */
 @Mojo(name="test", defaultPhase=LifecyclePhase.TEST)
@@ -57,38 +64,38 @@ public class TestMojo extends AbstractMojo
 	 */
 	@Parameter(property = "ctest.build.dir", required = true)
 	private File buildDirectory;
-
 	/**
 	 * The Maven project directory.
 	 */
 	@Component
 	private MavenProject project;
-
 	/**
 	 * Value that lets Maven tests fail without causing the build to fail.
 	 */
 	@Parameter(property = "maven.test.failure.ignore", defaultValue = "false")
 	private boolean testFailureIgnore;
-
 	/**
 	 * Maven tests value that indicates just the ctest tests are to be skipped.
 	 */
 	@Parameter(property = "ctest.skip.tests", defaultValue = "false")
 	private boolean ctestSkip;
-
 	/**
-	 * Maven tests value that indicates all tests are to be skipped.
+	 * Standard Maven tests value that indicates all tests are to be skipped.
 	 */
 	@Parameter(property = "maven.test.skip", defaultValue = "false")
 	private boolean skipTests;
-
 	/**
 	 * Number of threads to use; if not specified, uses
 	 * <code>Runtime.getRuntime().availableProcessors()</code>.
 	 */
 	@Parameter(property = "threadCount", defaultValue = "0")
 	private int threadCount;
-
+	/**
+     * The dashboard to which results should be submitted. This is configured
+     * through the optional CTestConfig.cmake file.
+     */
+    @Parameter(property = "dashboard")
+    private String dashboard;
 	/**
 	 * Executes the CTest run.
 	 */
@@ -110,18 +117,26 @@ public class TestMojo extends AbstractMojo
 
 		try
 		{
-			String projBuildDir = project.getBuild().getDirectory();
+		    String threadCountString = Integer.toString(threadCount);
+		    String projBuildDir = project.getBuild().getDirectory();
 			String buildDir = buildDirectory.getAbsolutePath();
+			List<String> args;
+			Path path;
 
 			if (!buildDirectory.exists())
 				throw new MojoExecutionException(buildDir + " does not exist");
 			if (!buildDirectory.isDirectory())
 				throw new MojoExecutionException(buildDir + " isn't directory");
 
-			ProcessBuilder processBuilder = new ProcessBuilder(Paths
-					.get(projBuildDir, "dependency/cmake").toAbsolutePath()
-					.resolve("bin/ctest").toString(), "-T", "Test", "-j",
-					Integer.toString(threadCount));
+			path = Paths.get(projBuildDir, "dependency/cmake").toAbsolutePath();
+			args = new ArrayList<String>(Arrays.asList(path.resolve("bin/ctest")
+			        .toString(), "-T", "Test", "-j", threadCountString));
+
+			// If set, this will post results to a preconfigured dashboard
+			if (dashboard != null)
+			    args.addAll(Arrays.asList("-D", dashboard));
+
+			ProcessBuilder processBuilder = new ProcessBuilder(args);
 
 			// Set the directory with the DartConfiguration.tcl config file
 			processBuilder.directory(buildDirectory);

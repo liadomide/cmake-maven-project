@@ -21,19 +21,18 @@ import org.junit.Test;
 /**
  * An integration test that runs tests related to generating code using CMake.
  * <p/>
- * 
  * @author Kevin S. Clarke <ksclarke@gmail.com>
  */
 public class GenerateMojoIntegrationTest extends CMakeMojoIntegrationTest
 {
 
 	/**
-	 * Tests the generation of a very simple &quot;Hello World&quot; project.
+	 * Tests the generation of a simple Hello-World-Test project.
 	 * 
 	 * @throws Exception If the test fails as a result of an exception
 	 */
 	@Test
-	public void testGenerateHelloWorld() throws Exception
+	public void testGenerateHelloWorldTest() throws Exception
 	{
 		Verifier verifier = getVerifier("hello-world-test");
 		verifier.displayStreamBuffers();
@@ -41,5 +40,20 @@ public class GenerateMojoIntegrationTest extends CMakeMojoIntegrationTest
 		verifier.resetStreams();
 		verifier.verifyErrorFreeLog();
 	}
+
+	/**
+     * Tests the generation of a simple Dashboard-Test project.
+     * 
+     * @throws Exception If the test fails as a result of an exception
+     */
+    @Test
+    public void testGenerateDashboardTest() throws Exception
+    {
+        Verifier verifier = getVerifier("dashboard-test");
+        verifier.displayStreamBuffers();
+        verifier.executeGoal("process-sources");
+        verifier.resetStreams();
+        verifier.verifyErrorFreeLog();
+    }
 
 }
