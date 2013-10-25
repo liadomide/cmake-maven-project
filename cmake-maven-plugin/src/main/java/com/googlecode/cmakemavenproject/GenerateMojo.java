@@ -39,8 +39,7 @@ import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
 
 /**
  * Goal which generates project files.
- * <p/>
- *
+ * <p>
  * @author Gili Tzabari
  */
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.PROCESS_SOURCES)
