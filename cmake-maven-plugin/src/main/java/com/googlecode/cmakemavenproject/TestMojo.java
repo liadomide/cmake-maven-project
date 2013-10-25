@@ -54,58 +54,49 @@ import org.apache.maven.project.MavenProject;
 
 /**
  * Goal which runs CMake/CTest tests.
- * <p/>
- * 
+ * <p/> 
  * @author Kevin S. Clarke <ksclarke@gmail.com>
  */
 @Mojo(name = "test", defaultPhase = LifecyclePhase.TEST)
 public class TestMojo extends AbstractMojo
 {
-
     /**
      * The directory containing the DartConfiguration.tcl file.
      */
     @Parameter(property = "ctest.build.dir", required = true)
     private File buildDirectory;
-
     /**
      * The Maven project directory.
      */
     @Component
     private MavenProject project;
-
     /**
      * Value that lets Maven tests fail without causing the build to fail.
      */
     @Parameter(property = "maven.test.failure.ignore", defaultValue = "false")
     private boolean testFailureIgnore;
-
     /**
      * Maven tests value that indicates just the ctest tests are to be skipped.
      */
     @Parameter(property = "ctest.skip.tests", defaultValue = "false")
     private boolean ctestSkip;
-
     /**
      * Standard Maven tests value that indicates all tests are to be skipped.
      */
     @Parameter(property = "maven.test.skip", defaultValue = "false")
     private boolean skipTests;
-
     /**
      * Number of threads to use; if not specified, uses
      * <code>Runtime.getRuntime().availableProcessors()</code>.
      */
     @Parameter(property = "threadCount", defaultValue = "0")
     private int threadCount;
-
     /**
      * The dashboard to which results should be submitted. This is configured
      * through the optional CTestConfig.cmake file.
      */
     @Parameter(property = "dashboard")
     private String dashboard;
-
     /**
      * Executes the CTest run.
      */
@@ -117,7 +108,6 @@ public class TestMojo extends AbstractMojo
         if (skipTests || ctestSkip)
         {
             if (log.isInfoEnabled()) log.info("Tests are skipped.");
-
             return;
         }
 
