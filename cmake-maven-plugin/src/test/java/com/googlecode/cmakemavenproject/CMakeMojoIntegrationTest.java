@@ -34,44 +34,44 @@ public abstract class CMakeMojoIntegrationTest
 {
 
     // Maven settings.xml file to be used for the test projects
-	private static final String SETTINGS = "/settings.xml";
-	
-	// CMake-Maven-Plugin version (so we don't have to manually keep in sync) 
-	private static final String CMP_VERSION = "cmake.project.version";
+    private static final String SETTINGS = "/settings.xml";
 
-	/**
-	 * Returns a <code>Verifier</code> that has been configured to use the test
-	 * repository along with the test project that was passed in as a variable.
-	 * <p/>
-	 * 
-	 * @param testName The CMake Maven project to test
-	 * @return A configured <code>Verifier</code>
-	 * @throws IOException If there is a problem with configuration.
-	 * @throws VerificationException If there is a problem with verification.
-	 */
-	protected Verifier getVerifier(String testName) throws IOException,
-			VerificationException
-	{
-		Class<? extends CMakeMojoIntegrationTest> cls = getClass();
-		String name = testName.startsWith("/") ? testName : "/" + testName;
-		File config = ResourceExtractor.simpleExtractResources(cls, SETTINGS);
-		File test = ResourceExtractor.simpleExtractResources(cls, name);
-		String settings = config.getAbsolutePath();
+    // CMake-Maven-Plugin version (so we don't have to manually keep in sync) 
+    private static final String CMP_VERSION = "cmake.project.version";
 
-		// Construct a verifier that will run our integration tests
-		Verifier verifier = new Verifier(test.getAbsolutePath(), settings, true);
-		Properties verProperties = verifier.getVerifierProperties();
-		Properties sysProperties = verifier.getSystemProperties();
+    /**
+     * Returns a <code>Verifier</code> that has been configured to use the test
+     * repository along with the test project that was passed in as a variable.
+     * <p/>
+     * 
+     * @param testName The CMake Maven project to test
+     * @return A configured <code>Verifier</code>
+     * @throws IOException If there is a problem with configuration.
+     * @throws VerificationException If there is a problem with verification.
+     */
+    protected Verifier getVerifier(String testName) throws IOException,
+        VerificationException
+    {
+        Class<? extends CMakeMojoIntegrationTest> cls = getClass();
+        String name = testName.startsWith("/") ? testName : "/" + testName;
+        File config = ResourceExtractor.simpleExtractResources(cls, SETTINGS);
+        File test = ResourceExtractor.simpleExtractResources(cls, name);
+        String settings = config.getAbsolutePath();
 
-		// We need to pass along the version number of our parent project
-		sysProperties.setProperty(CMP_VERSION, System.getProperty(CMP_VERSION));
+        // Construct a verifier that will run our integration tests
+        Verifier verifier = new Verifier(test.getAbsolutePath(), settings, true);
+        Properties verProperties = verifier.getVerifierProperties();
+        Properties sysProperties = verifier.getSystemProperties();
 
-		// use.mavenRepoLocal instructs forked tests to use the local repo
-		verProperties.setProperty("use.mavenRepoLocal", "true");
+        // We need to pass along the version number of our parent project
+        sysProperties.setProperty(CMP_VERSION, System.getProperty(CMP_VERSION));
 
-		verifier.setAutoclean(true); // Set so clean is run before each test
+        // use.mavenRepoLocal instructs forked tests to use the local repo
+        verProperties.setProperty("use.mavenRepoLocal", "true");
 
-		return verifier;
-	}
+        verifier.setAutoclean(true); // Set so clean is run before each test
+
+        return verifier;
+    }
 
 }

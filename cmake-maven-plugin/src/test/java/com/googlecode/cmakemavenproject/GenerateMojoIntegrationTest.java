@@ -26,22 +26,22 @@ import org.junit.Test;
 public class GenerateMojoIntegrationTest extends CMakeMojoIntegrationTest
 {
 
-	/**
-	 * Tests the generation of a simple Hello-World-Test project.
-	 * 
-	 * @throws Exception If the test fails as a result of an exception
-	 */
-	@Test
-	public void testGenerateHelloWorldTest() throws Exception
-	{
-		Verifier verifier = getVerifier("hello-world-test");
-		verifier.displayStreamBuffers();
-		verifier.executeGoal("process-sources");
-		verifier.resetStreams();
-		verifier.verifyErrorFreeLog();
-	}
+    /**
+     * Tests the generation of a simple Hello-World-Test project.
+     * 
+     * @throws Exception If the test fails as a result of an exception
+     */
+    @Test
+    public void testGenerateHelloWorldTest() throws Exception
+    {
+        Verifier verifier = getVerifier("hello-world-test");
+        verifier.displayStreamBuffers();
+        verifier.executeGoal("process-sources");
+        verifier.resetStreams();
+        verifier.verifyErrorFreeLog();
+    }
 
-	/**
+    /**
      * Tests the generation of a simple Dashboard-Test project.
      * 
      * @throws Exception If the test fails as a result of an exception

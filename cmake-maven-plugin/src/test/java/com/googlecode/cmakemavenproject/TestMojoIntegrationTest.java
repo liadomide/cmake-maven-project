@@ -30,22 +30,22 @@ public class TestMojoIntegrationTest extends CMakeMojoIntegrationTest
      * 
      * @throws Exception If the test fails as a result of an exception
      */
-	@Test
-	public void testGenerateHelloTest() throws Exception
-	{
-		Verifier verifier = getVerifier("hello-world-test");
-		verifier.displayStreamBuffers();
-		verifier.executeGoal("verify");
-		verifier.resetStreams();
-		verifier.verifyErrorFreeLog();
-	}
+    @Test
+    public void testGenerateHelloTest() throws Exception
+    {
+        Verifier verifier = getVerifier("hello-world-test");
+        verifier.displayStreamBuffers();
+        verifier.executeGoal("verify");
+        verifier.resetStreams();
+        verifier.verifyErrorFreeLog();
+    }
 
-	/**
+    /**
      * Tests the testing of a simple Dashboard-Test project.
      * 
      * @throws Exception If the test fails as a result of an exception
      */
-	@Test
+    @Test
     public void testGenerateDashboardTest() throws Exception
     {
         Verifier verifier = getVerifier("dashboard-test");

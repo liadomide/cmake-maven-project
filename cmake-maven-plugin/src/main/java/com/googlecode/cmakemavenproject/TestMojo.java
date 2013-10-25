@@ -145,10 +145,8 @@ public class TestMojo extends AbstractMojo
 			{
 				log.debug("CTest build directory: " + buildDir);
 				log.debug("Number of threads used: " + threadCount);
-			}
-
-			if (log.isDebugEnabled())
 				log.debug("Command-line: " + processBuilder.command());
+			}
 
 			// Run the ctest suite of tests
 			int returnCode = Mojos.waitFor(processBuilder);
