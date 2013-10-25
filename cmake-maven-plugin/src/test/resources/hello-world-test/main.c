@@ -2,5 +2,5 @@
 
 int main()
 {
-  return 0;  // A successful test!
+  return 1;  // A failed test, but that's what we expect.
 }
