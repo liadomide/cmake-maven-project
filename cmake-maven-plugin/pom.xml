@@ -197,9 +197,9 @@
 	<!--
 		OS profile activation is triggered by the system's operating system.
 		This can be overridden by substracting a profile on the command line.
-		
+
 		For instance: mvn -Pwindows,-linux install
-		
+
 		To accept the OS activated profile, just use: mvn install
 	-->
 	<profiles>
