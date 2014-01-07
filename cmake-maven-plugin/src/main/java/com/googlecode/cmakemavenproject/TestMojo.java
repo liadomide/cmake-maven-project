@@ -15,6 +15,8 @@ package com.googlecode.cmakemavenproject;
  * the License.
  */
 
+import java.nio.file.Path;
+
 import java.util.ArrayList;
 
 import java.util.Arrays;
@@ -118,14 +120,16 @@ public class TestMojo extends AbstractMojo
 			String projBuildDir = project.getBuild().getDirectory();
 			String buildDir = buildDirectory.getAbsolutePath();
 			List<String> args;
+			Path path;
 
 			if (!buildDirectory.exists())
 				throw new MojoExecutionException(buildDir + " does not exist");
 			if (!buildDirectory.isDirectory())
 				throw new MojoExecutionException(buildDir + " isn't directory");
 
-			String ctest = new File(projBuildDir, "dependency/cmake/bin/ctest").getAbsolutePath();
-			args = new ArrayList<String>(Arrays.asList(ctest, "-T", "Test", "-j", threadCountString));
+			path = Paths.get(projBuildDir, "dependency/cmake").toAbsolutePath();
+			args = new ArrayList<String>(Arrays.asList(path.resolve("bin/ctest")
+					.toString(), "-T", "Test", "-j", threadCountString));
 
 			// If set, this will post results to a preconfigured dashboard
 			if (dashboard != null) args.addAll(Arrays.asList("-D", dashboard));
