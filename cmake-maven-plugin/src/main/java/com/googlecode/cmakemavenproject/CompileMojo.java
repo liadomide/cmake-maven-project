@@ -16,8 +16,6 @@ package com.googlecode.cmakemavenproject;
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -87,10 +85,10 @@ public class CompileMojo
 			if (!projectDirectory.isDirectory())
 				throw new MojoExecutionException(projectDirectory.getAbsolutePath() + " must be a directory");
 
-			Path cmakeDir = Paths.get(project.getBuild().getDirectory(), "dependency/cmake").
-				toAbsolutePath();
-			ProcessBuilder processBuilder = new ProcessBuilder(cmakeDir.resolve("bin/cmake").toString(),
-				"--build", projectDirectory.getPath());
+			String cmake = new File(project.getBuild().getDirectory(),
+					"dependency/cmake/bin/cmake").getAbsolutePath();
+			ProcessBuilder processBuilder = new ProcessBuilder(cmake, "--build",
+					projectDirectory.getPath());
 			if (target != null)
 				Collections.addAll(processBuilder.command(), "--target", target);
 			if (config != null)

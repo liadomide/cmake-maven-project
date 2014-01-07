@@ -1,0 +1,14 @@
+language: java
+
+jdk:
+  - openjdk7
+  - openjdk6
+
+script: "mvn install"
+
+notifications:
+  email:
+    recipients:
+      - ksclarke@gmail.com
+    on_failure: change
+    on_success: change
