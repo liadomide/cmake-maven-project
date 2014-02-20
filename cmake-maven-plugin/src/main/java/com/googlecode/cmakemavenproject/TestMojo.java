@@ -124,7 +124,7 @@ public class TestMojo extends AbstractMojo
 
 			path = new File(projBuildDir, "dependency/cmake").getAbsoluteFile();
 			args = new ArrayList<String>(Arrays.asList(new File(path, "bin/ctest")
-			                .getAbsolutePath(), "-T", "Test", "-j", threadCountString));
+				.getAbsolutePath(), "-T", "Test", "-j", threadCountString));
 
 			// If set, this will post results to a preconfigured dashboard
 			if (dashboard != null) args.addAll(Arrays.asList("-D", dashboard));

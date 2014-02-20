@@ -87,7 +87,7 @@ public class CompileMojo
 
 			File cmakeFile = new File(project.getBuild().getDirectory(), "dependency/cmake/bin/cmake");
 			ProcessBuilder processBuilder = new ProcessBuilder(cmakeFile.getAbsolutePath(),
-                    "--build", projectDirectory.getPath());
+				"--build", projectDirectory.getPath());
 			if (target != null)
 				Collections.addAll(processBuilder.command(), "--target", target);
 			if (config != null)
