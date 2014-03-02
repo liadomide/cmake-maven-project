@@ -3,9 +3,19 @@ language: java
 jdk:
   - openjdk7
 
-script: "mvn install"
+branches:
+  only:
+    - travis-testing
+
+script:
+  - mvn install
 
 notifications:
+  irc:
+    channels:
+      - irc.freenode.org#freelibrary
+    on_failure: always
+    on_success: always
   email:
     recipients:
       - ksclarke@gmail.com
