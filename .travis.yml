@@ -7,10 +7,10 @@ branches:
   only:
     - travis-testing
 
+# CMake is 32 bit and Travis VMs are 64 bit; install 32 bit libs before testing
 script:
   - sudo apt-get install gcc-multilib
   - mvn install
-  - file /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target/dependency/cmake/bin/cmake
 
 notifications:
   irc:
