@@ -5,7 +5,7 @@ jdk:
 
 branches:
   only:
-    - travis-testing
+    - master
 
 # CMake is 32 bit and Travis VMs are 64 bit; install 32 bit libs before testing
 script:
