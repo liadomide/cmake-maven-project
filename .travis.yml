@@ -9,10 +9,19 @@ branches:
 
 script:
   - mvn install
-  - ls -lR /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target/dependency/cmake
-  - /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target/dependency/cmake/bin/cmake --version
-  - mvn help:active-profiles
-  - ls -la /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target
+  - ls -l /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target/dependency/cmake/bin/cmake
+  - ls -l /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target/dependency/cmake/
+  - ls -l /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target/dependency/
+  - ls -l /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target/
+  - ls -l /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/
+  - ls -l /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/
+  - ls -l /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/
+  - ls -l /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/
+  - ls -l /home/travis/build/ksclarke/cmake-maven-project/
+  - ls -l /home/travis/build/ksclarke/
+  - ls -l /home/travis/build/
+  - ls -l /home/travis/
+  - ls -l /home/
 
 notifications:
   irc:
