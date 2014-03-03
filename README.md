@@ -1,4 +1,4 @@
-# cmake-maven-project
+# cmake-maven-project [![Build Status](https://travis-ci.org/ksclarke/cmake-maven-project.png?branch=master)](https://travis-ci.org/ksclarke/cmake-maven-project)
 
 A git copy of the hg cmake-maven-project hosted on Google Code:
 
