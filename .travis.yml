@@ -10,7 +10,7 @@ branches:
 script:
   - mvn install
   - ls -l /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target/dependency/cmake/bin/cmake
-  - /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target/dependency/cmake/bin/cmake --version
+  - sudo /home/travis/build/ksclarke/cmake-maven-project/cmake-maven-plugin/target/test-classes/dashboard-test/target/dependency/cmake/bin/cmake --version
 
 notifications:
   irc:
