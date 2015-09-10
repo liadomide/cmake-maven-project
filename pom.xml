@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.googlecode.cmake-maven-project</groupId>
 	<artifactId>cmake</artifactId>
-	<version>2.8.12.2-b1-SNAPSHOT</version>
+	<version>2.8.12.2-b1</version>
 	<packaging>pom</packaging>
 	<name>CMake</name>
 	<description>Builds native code using CMake makefile generator</description>
@@ -35,6 +35,12 @@
 			<name>Gili Tzabari</name>
 		</developer>
 	</developers>
+	<distributionManagement>
+		<repository>
+			<id>epi</id>
+			<url>https://repo.codemart.ro/nexus/content/repositories/epi</url>
+		</repository>
+	</distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
